@@ -8,6 +8,7 @@ const (
 	NLINE
 	SPACE
 	SEMCOL
+	SLASHES
 	SEPARATORS_LENGTH
 )
 
@@ -27,6 +28,8 @@ func SeparatorStr(v TokenValue) string {
 		return " "
 	case SEMCOL:
 		return ";"
+	case SLASHES:
+		return "//"
 	default:
 		panic("Separator not recognized!")
 	}

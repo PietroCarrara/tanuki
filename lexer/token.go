@@ -20,6 +20,7 @@ const (
 	SEPARATOR
 	LITERAL
 	IDENTIFIER
+	COMMENT
 )
 
 func (t Token) String() string {
@@ -38,6 +39,8 @@ func TypeStr(t TokenType) string {
 		return "Literal"
 	case IDENTIFIER:
 		return "Identifier"
+	case COMMENT:
+		return "Comment"
 	default:
 		panic("TokenType not recognized!")
 	}
@@ -55,6 +58,8 @@ func ValueStr(t Token) string {
 	case LITERAL:
 		return t.Name
 	case IDENTIFIER:
+		return t.Name
+	case COMMENT:
 		return t.Name
 	default:
 		panic("TokenType not recognized!")

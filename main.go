@@ -12,7 +12,9 @@ for (var i = 0; i <= 20; i++) {
 	print(i)
 }
 var sla = 20;
-var myVar = \"my string\";`)
+// Maybe that string will be valid code
+// we'll see
+var myVar = "Hello from "tanuki""`)
 
 	fmt.Println(tokens)
 

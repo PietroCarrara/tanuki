@@ -1,6 +1,7 @@
 package lexer
 
 import (
+	"fmt"
 	"math"
 	"sort"
 	"strings"
@@ -11,10 +12,6 @@ var keys map[string]Token = map[string]Token{}
 var separators []string
 
 func init() {
-
-	sort.Slice(separators, func(i, j int) bool {
-		return len(separators[i]) > len(separators[j])
-	})
 
 	var i TokenValue
 	for i = 0; i < OPERATORS_LENGTH; i++ {
@@ -28,6 +25,10 @@ func init() {
 	for i = 0; i < KEYWORDS_LENGTH; i++ {
 		keys[KeywordStr(i)] = Token{Type: KEYWORD, Value: i}
 	}
+
+	sort.Slice(separators, func(i, j int) bool {
+		return len(separators[i]) > len(separators[j])
+	})
 }
 
 func Lex(code string) []Token {
@@ -37,6 +38,7 @@ func Lex(code string) []Token {
 	tokens := []Token{}
 
 	isOnString := false
+	isOnCommentLine := false
 	str := ""
 	for _, unit := range units {
 		token := Token{}
@@ -55,18 +57,57 @@ func Lex(code string) []Token {
 			continue
 		}
 
-		if val, ok := keys[unit]; ok {
-			token = val
-			token.Name = unit
+		if isOnCommentLine {
+			str += unit
+			if strings.HasSuffix(unit, "\n") {
+				isOnCommentLine = false
 
-			tokens = append(tokens, token)
+				token.Type = COMMENT
+				token.Name = str
+				str = ""
 
+				tokens = append(tokens, token)
+			}
 			continue
 		}
 
 		if strings.HasPrefix(unit, "\"") {
 			isOnString = true
 			str += unit
+			if strings.HasSuffix(unit, "\"") {
+				isOnString = false
+
+				token.Type = LITERAL
+				token.Name = str
+				str = ""
+
+				tokens = append(tokens, token)
+			}
+			continue
+		}
+
+		if strings.HasPrefix(unit, "//") {
+			isOnCommentLine = true
+			fmt.Println("Beggining comment...")
+			str += unit
+			if strings.HasSuffix(unit, "\n") {
+				isOnCommentLine = false
+
+				token.Type = COMMENT
+				token.Name = str
+				str = ""
+
+				tokens = append(tokens, token)
+			}
+			continue
+		}
+
+		if val, ok := keys[unit]; ok {
+			token = val
+			token.Name = unit
+
+			tokens = append(tokens, token)
+
 			continue
 		}
 
