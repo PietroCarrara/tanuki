@@ -1,7 +1,6 @@
 package lexer
 
 import (
-	"fmt"
 	"math"
 	"sort"
 	"strings"
@@ -88,7 +87,6 @@ func Lex(code string) []Token {
 
 		if strings.HasPrefix(unit, "//") {
 			isOnCommentLine = true
-			fmt.Println("Beggining comment...")
 			str += unit
 			if strings.HasSuffix(unit, "\n") {
 				isOnCommentLine = false

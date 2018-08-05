@@ -8,13 +8,12 @@ import (
 func main() {
 
 	tokens := lexer.Lex(`
-for (var i = 0; i <= 20; i++) {
+int i = 0
+while (i < 20) {
 	print(i)
+	i = i + 1
 }
-var sla = 20;
-// Maybe that string will be valid code
-// we'll see
-var myVar = "Hello from "tanuki""`)
+`)
 
 	fmt.Println(tokens)
 
@@ -22,5 +21,4 @@ var myVar = "Hello from "tanuki""`)
 		fmt.Print(tok.Name)
 	}
 	fmt.Println()
-
 }
