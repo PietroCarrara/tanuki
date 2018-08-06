@@ -9,6 +9,8 @@ const (
 	SPACE
 	SEMCOL
 	SLASHES
+	COMMA
+	EOF
 	SEPARATORS_LENGTH
 )
 
@@ -30,22 +32,11 @@ func SeparatorStr(v TokenValue) string {
 		return ";"
 	case SLASHES:
 		return "//"
+	case COMMA:
+		return ","
+	case EOF:
+		return "EOF"
 	default:
 		panic("Separator not recognized!")
 	}
-}
-
-func (v TokenValue) ReverseSeparator() TokenValue {
-	switch v {
-	case O_PAR:
-		return C_PAR
-	case C_PAR:
-		return O_PAR
-	case O_KEY:
-		return C_KEY
-	case C_KEY:
-		return O_KEY
-	}
-
-	return v
 }

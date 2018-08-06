@@ -32,6 +32,9 @@ func init() {
 
 func Lex(code string) []Token {
 
+	// Maybe trim the names of identifiers in the code
+	code = strings.Replace(code, "\t", "", -1)
+
 	units := lex(code)
 
 	tokens := []Token{}
@@ -104,6 +107,10 @@ func Lex(code string) []Token {
 			token = val
 			token.Name = unit
 
+			if val.Type == SEPARATOR && val.Value == SPACE {
+				continue
+			}
+
 			tokens = append(tokens, token)
 
 			continue
@@ -123,6 +130,8 @@ func Lex(code string) []Token {
 
 		tokens = append(tokens, token)
 	}
+
+	tokens = append(tokens, Token{Type: SEPARATOR, Value: EOF, Name: "EOF"})
 
 	return tokens
 }
